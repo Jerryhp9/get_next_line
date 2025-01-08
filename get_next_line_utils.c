@@ -10,45 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "get_next_line.h"
 
-size_t  ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(str[i] != '\0')
-    {
-        i++;
-    }
-    return (str[i]);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (str[i]);
 }
 
 // int main()
 // {
-    // char *str1 = "Hello there";
+	// char *str1 = "Hello there";
 // 
-    // printf("%s", str1);
+	// printf("%s", str1);
 // }
 
 char	*ft_strchr(const char *s, int c)
 {
-    c = ((unsigned char)c);
-
-    while (*s != '\0')
-    {
-        if (*s == c)
-            return ((char *)s);
-        s++;
-    }
-    return (NULL);
+	c = ((unsigned char)c);
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char *)s);
+		s++;
+	}
+	return (NULL);
 }
 // 
 // int main()
 // {
-    // char *str = "Hello world";
+	// char *str = "Hello world";
 // 
-    // printf("%s", ft_strchr(str, 'o'));
+	// printf("%s", ft_strchr(str, 'o'));
 // }
 
 char	*ft_strjoin(char *line, char *buff)
