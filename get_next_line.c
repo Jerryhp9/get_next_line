@@ -12,10 +12,10 @@
 
 #include "get_next_line.h"
 
-char *ft_get_line(int fd, char *line)
+char	*ft_get_line(int fd, char *line)
 {
-	char *buffer;
-	size_t read_bytes;
+	char	*buffer;
+	size_t	read_bytes;
 
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
@@ -34,4 +34,55 @@ char *ft_get_line(int fd, char *line)
 	}
 	free(buffer);
 	return (line);
+}
+
+char	*new_line(char *line)
+{
+	int	i;
+	int	j;
+	char	*str;
+
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (!line[i])
+		free(line);
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (!line[i])
+		str[j++] = line[i++];
+	str[j] = '\0';
+	free(line);
+	return (str);
+}
+	
+{
+	int	i;
+	char	*str;
+
+	i = 0;
+	if (!line[i])
+		return (NULL);
+	while (line[i] && line[i] != '\n')
+		i++;
+	str = (char *)malloc(i + 2);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (line[i] && line[i] != '\n')
+	{
+		str[i] = line[i];
+		i++;
+	}
+	if (line[i] == '\n')
+	{
+		str[i] = line[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
