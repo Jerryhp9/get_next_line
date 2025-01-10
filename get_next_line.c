@@ -60,6 +60,7 @@ char	*new_line(char *line)
 	return (str);
 }
 	
+char	*ft_get_next_line(char *line)
 {
 	int	i;
 	char	*str;
@@ -85,4 +86,18 @@ char	*new_line(char *line)
 	}
 	str[i] = '\0';
 	return (str);
+}
+char	*get_next_line(int fd)
+{
+	static char	*line;
+	char	*next_line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	line = ft_get_line(fd, line);
+	if (!line)
+		return (NULL);
+	next_line = ft_get_next_line(line);
+	line = new_line(line);
+	return (next_line);
 }
