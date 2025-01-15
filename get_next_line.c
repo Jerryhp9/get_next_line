@@ -97,7 +97,25 @@ char	*get_next_line(int fd)
 	line = ft_get_line(fd, line);
 	if (!line)
 		return (NULL);
+
 	next_line = ft_get_next_line(line);
 	line = new_line(line);
 	return (next_line);
+}
+
+int main()
+{
+	int fd = open ("text.txt", O_RDONLY);
+	if (fd < 0)
+		return 1;
+	char *line;
+	int i = 0;
+
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
 }

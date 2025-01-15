@@ -50,30 +50,30 @@ char	*ft_strchr(const char *s, int c)
 	// printf("%s", ft_strchr(str, 'o'));
 // }
 
-char	*ft_strjoin(char *line, char *buff)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	j;
-	char	*str;
+	int		i;
+	int		j;
+	char	*newstr;
+	size_t	len;
 
-	if (!line)
+	len = ft_strlen(s1) + ft_strlen(s2);
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	newstr = (char *)malloc(sizeof (char) * (len + 1));
+	if (newstr == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
 	{
-		line = (char *)malloc(1 * sizeof(char));
-		line[0] = '\0';
+		newstr[i] = s1[i];
+		i++;
 	}
-	if (!line || !buff)
-		return (NULL);
-	str = malloc(sizeof(char) * ((ft_strlen(line) + ft_strlen(buff)) + 1));
-	if (str == NULL)
-		return (NULL);
-	i = -1;
 	j = 0;
-	if (line)
-		while (line[++i] != '\0')
-			str[i] = line[i];
-	while (buff[j] != '\0')
-		str[i++] = buff[j++];
-	str[ft_strlen(line) + ft_strlen(buff)] = '\0';
-	free(line);
-	return (str);
+	while (s2[j] != '\0')
+	{
+		newstr[i++] = s2[j++];
+	}
+	newstr[i] = '\0';
+	return (newstr);
 }
