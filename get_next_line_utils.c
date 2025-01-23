@@ -14,14 +14,14 @@
 
 size_t	ft_strlen(const char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (str[i] != '\0')
 	{
 		i++;
 	}
-	return (str[i]);
+	return (i);
 }
 
 // int main()
@@ -40,6 +40,8 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)s);
 		s++;
 	}
+	if (*s == c)
+		return ((char *)s);
 	return (NULL);
 }
 // 

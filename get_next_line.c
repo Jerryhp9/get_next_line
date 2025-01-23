@@ -15,22 +15,30 @@
 char	*ft_get_line(int fd, char *line)
 {
 	char	*buffer;
-	size_t	read_bytes;
+	int	read_bytes;
+	char	*temp;
 
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	if (!line)
+	{
+		line = (char *)malloc(1);
+		if (!line)
+			return (free(buffer), NULL);
+		line[0] = '\0';
+	}
 	read_bytes = 1;
+	buffer[0] = '\0';
 	while (!ft_strchr(buffer, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
-		{
-			free(buffer);
-			return NULL;
-		}
+			return (free(buffer), NULL);
 		buffer[read_bytes] = '\0';
+		temp = line;
 		line = ft_strjoin(line, buffer);
+		free(temp);
 	}
 	free(buffer);
 	return (line);
@@ -46,14 +54,16 @@ char	*new_line(char *line)
 	while (line[i] && line[i] != '\n')
 		i++;
 	if (!line[i])
+	{
 		free(line);
 		return (NULL);
+	}
 	str = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1));
 	if (!str)
 		return (NULL);
 	i++;
 	j = 0;
-	while (!line[i])
+	while (line[i])
 		str[j++] = line[i++];
 	str[j] = '\0';
 	free(line);
@@ -90,9 +100,11 @@ char	*ft_get_next_line(char *line)
 char	*get_next_line(int fd)
 {
 	static char	*line;
+	char	*buffer;
 	char	*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, BUFFER_SIZE) == -1)
 		return (NULL);
 	line = ft_get_line(fd, line);
 	if (!line)
@@ -103,19 +115,22 @@ char	*get_next_line(int fd)
 	return (next_line);
 }
 
-int main()
-{
-	int fd = open ("text.txt", O_RDONLY);
-	if (fd < 0)
-		return 1;
-	char *line;
-	int i = 0;
-
-	line = get_next_line(fd);
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-}
+// int main()
+// {
+// 	int fd = open ("text.txt", O_RDONLY);
+// 	if (fd < 0)
+// 		return 1;
+// 	// printf("gnl\n");
+// 	char *line;
+// 	int i;
+// 	line = NULL;
+// 	i = 0;
+// 	line = get_next_line(fd);
+// 	while (line)
+// 	{
+// 		printf("%s\n", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	close(fd);
+// }
