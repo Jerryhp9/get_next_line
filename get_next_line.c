@@ -15,7 +15,7 @@
 char	*ft_get_line(int fd, char *line)
 {
 	char	*buffer;
-	int	read_bytes;
+	int		read_bytes;
 	char	*temp;
 
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
@@ -33,8 +33,11 @@ char	*ft_get_line(int fd, char *line)
 	while (!ft_strchr(buffer, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
+		if ((!line && read_bytes <= 0) || read_bytes == -1)
+		{
+			free(line);
 			return (free(buffer), NULL);
+		}
 		buffer[read_bytes] = '\0';
 		temp = line;
 		line = ft_strjoin(line, buffer);
@@ -100,11 +103,9 @@ char	*ft_get_next_line(char *line)
 char	*get_next_line(int fd)
 {
 	static char	*line;
-	char	*buffer;
 	char	*next_line;
-
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, BUFFER_SIZE) == -1)
+	
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = ft_get_line(fd, line);
 	if (!line)
@@ -120,7 +121,7 @@ char	*get_next_line(int fd)
 // 	int fd = open ("text.txt", O_RDONLY);
 // 	if (fd < 0)
 // 		return 1;
-// 	// printf("gnl\n");
+// 	printf("gnl\n");
 // 	char *line;
 // 	int i;
 // 	line = NULL;
