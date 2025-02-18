@@ -12,15 +12,11 @@
 
 #include "get_next_line.h"
 
-char	*ft_get_line(int fd, char *line)
+char	*ft_get_line(int fd, char *line, char *buffer)
 {
-	char	*buffer;
 	int		read_bytes;
 	char	*temp;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
-	if (!buffer)
-		return (NULL);
 	if (!line)
 	{
 		line = (char *)malloc(1);
@@ -29,7 +25,6 @@ char	*ft_get_line(int fd, char *line)
 		line[0] = '\0';
 	}
 	read_bytes = 1;
-	buffer[0] = '\0';
 	while (!ft_strchr(buffer, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
@@ -43,14 +38,13 @@ char	*ft_get_line(int fd, char *line)
 		line = ft_strjoin(line, buffer);
 		free(temp);
 	}
-	free(buffer);
 	return (line);
 }
 
 char	*new_line(char *line)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*str;
 
 	i = 0;
@@ -72,10 +66,10 @@ char	*new_line(char *line)
 	free(line);
 	return (str);
 }
-	
+
 char	*ft_get_next_line(char *line)
 {
-	int	i;
+	int		i;
 	char	*str;
 
 	i = 0;
@@ -100,17 +94,24 @@ char	*ft_get_next_line(char *line)
 	str[i] = '\0';
 	return (str);
 }
+
 char	*get_next_line(int fd)
 {
 	static char	*line;
-	char	*next_line;
-	
+	char		*next_line;
+	char		*buffer;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = ft_get_line(fd, line);
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	buffer[0] = '\0';
+	line = ft_get_line(fd, line, buffer);
+	if (line)
+		free(buffer);
 	if (!line)
 		return (NULL);
-
 	next_line = ft_get_next_line(line);
 	line = new_line(line);
 	return (next_line);
@@ -118,7 +119,7 @@ char	*get_next_line(int fd)
 
 // int main()
 // {
-// 	int fd = open ("text.txt", O_RDONLY);
+// 	int fd = open ("test.txt", O_RDONLY);
 // 	if (fd < 0)
 // 		return 1;
 // 	printf("gnl\n");

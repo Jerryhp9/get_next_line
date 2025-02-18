@@ -20,12 +20,13 @@
 # include <fcntl.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <limits.h>
 
 size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *line, char *buff);
 char	*ft_strdup(const char *s);
-char	*ft_get_line(int fd, char *line);
+char	*ft_get_line(int fd, char *line, char *buffer);
 char	*new_line(char *line);
 char	*ft_get_next_line(char *line);
 char	*get_next_line(int fd);
