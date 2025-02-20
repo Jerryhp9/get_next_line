@@ -18,15 +18,15 @@ char	*ft_get_line(int fd, char *line, char *buffer)
 	char	*temp;
 
 	if (!line)
-	{
-		line = (char *)malloc(1);
-		if (!line)
-			return (free(buffer), NULL);
-		line[0] = '\0';
-	}
+		line = ft_strdup("");
 	read_bytes = 1;
 	while (!ft_strchr(buffer, '\n') && read_bytes > 0)
 	{
+		if (BUFFER_SIZE <= 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if ((!line && read_bytes <= 0) || read_bytes == -1)
 		{
@@ -101,12 +101,12 @@ char	*get_next_line(int fd)
 	char		*next_line;
 	char		*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (free(buffer), NULL);
+	buffer[0] = '\0';
 	if (!buffer)
 		return (NULL);
-	buffer[0] = '\0';
 	line = ft_get_line(fd, line, buffer);
 	if (line)
 		free(buffer);
@@ -119,20 +119,18 @@ char	*get_next_line(int fd)
 
 // int main()
 // {
-// 	int fd = open ("test.txt", O_RDONLY);
+// 	int fd = open ("test.txt", O_RDONLY, O_WRONLY);
 // 	if (fd < 0)
 // 		return 1;
-// 	printf("gnl\n");
 // 	char *line;
-// 	int i;
 // 	line = NULL;
-// 	i = 0;
 // 	line = get_next_line(fd);
 // 	while (line)
 // 	{
-// 		printf("%s\n", line);
+// 		printf("%s", line);
 // 		free(line);
 // 		line = get_next_line(fd);
 // 	}
+// 	printf("\n");
 // 	close(fd);
 // }
